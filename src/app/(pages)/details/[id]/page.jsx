@@ -58,7 +58,7 @@ const HotelDetails = (ctx) => {
       <div className="h-full w-3/4 mx-auto">
         <div>
           {/* Swiper Container for Hotel Images */}
-          <div className="w-full h-[750px] overflow-hidden mx-auto">
+          <div className="w-full h-[650px] overflow-hidden mx-auto">
             <div className="w-full h-full">
               <swiper-container
                 ref={swiperElRef}
@@ -68,9 +68,9 @@ const HotelDetails = (ctx) => {
                 {listing?.imageUrls?.map((imageUrl) => (
                   <swiper-slide key={imageUrl}>
                     <Image
-                      className="h-[750px] w-full object-cover rounded-lg"
-                      height="750"
-                      width="750"
+                        className="max-h-[570px] w-full object-cover rounded-lg"
+                        height="450"
+                        width="700"
                       src={imageUrl}
                       blurDataURL={
                         typeof listing.blurredImage === "string"
@@ -89,7 +89,7 @@ const HotelDetails = (ctx) => {
           </div>
 
           {/* Hotel Details */}
-          <div className="mt-12 px-6 w-full flex items-center justify-between">
+          <div className=" px-6 w-full flex items-center justify-between">
             <h2 className="font-bold text-4xl">{listing.name}</h2>
             <div>
               <span className="p-2 px-4 text-[22px] rounded-full bg-blue-600 text-white flex items-center gap-2">
@@ -117,7 +117,7 @@ const HotelDetails = (ctx) => {
             )}
           </div>
           <div className="mt-16 px-6 w-full flex items-end justify-between">
-            <p className="text-xl max-w-xl text-slate-700">{listing.desc}</p>
+            <p className="text-xl max-w-xl text-slate-500">{listing.desc}</p>
             <button
               onClick={handleShowModal}
               className="cursor-pointer rounded-lg py-2 px-6 text-xl text-white bg-blue-500"

@@ -31,15 +31,15 @@ const CreateModal = ({ handleHideModal }) => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
-    defaultValues: {
-      name: "",
-      desc: "",
-      beds: 5,
-      hasFreeWifi: false,
-      type: "奢华",
-      location: "北京",
-      pricePerNight: 123,
-    },
+    // defaultValues: {
+    //   name: "",
+    //   desc: "",
+    //   beds: 5,
+    //   hasFreeWifi: false,
+    //   type: "奢华",
+    //   location: "北京",
+    //   pricePerNight: 123,
+    // },
   });
 
   useEffect(() => {
@@ -126,13 +126,14 @@ const CreateModal = ({ handleHideModal }) => {
           className="w-[300px] px-2 py-3 rounded-xl"
           register={register("pricePerNight", { valueAsNumber: true })}
           step={0.01}
-          placeholder="¥249.00"
+          placeholder="每晚价格"
         />
         <Input
           type="number"
           className="w-[300px] px-2 py-3 rounded-xl"
           register={register("beds", { valueAsNumber: true })}
           step={1}
+          placeholder="床位数"
         />
         <div className='text-slate-400 rounded-md ml-4 w-2/3 flex gap-4'>
           <label htmlFor="freeWifi">免费网络</label>

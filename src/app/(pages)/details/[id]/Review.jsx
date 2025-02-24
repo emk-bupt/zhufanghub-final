@@ -18,13 +18,17 @@ const Review = ({ review }) => {
         />
       </div>
       <div>
-        <h3 className="font-semibold text-[20px]">{review.user?.username}</h3>
-        <span className="text-slate-700">
+        <h3 className="font-semibold text-[20px] text-gray-900 dark:text-gray-200">
+          {review.user?.username}
+        </h3>
+        <span className="text-slate-700 dark:text-gray-400">
           {format(new Date(review.createdAt), "yyyy年M月d日", { locale: zhCN })}
         </span>
-        <div className="mt-4 text-slate-800">{review.text}</div>
+        <div className="mt-4 text-slate-800 dark:text-gray-300">
+          {review.text}
+        </div>
       </div>
-      <span className="ml-auto flex items-center gap-2">
+      <span className="ml-auto flex items-center gap-2 text-slate-800 dark:text-gray-300">
         {review.stars}
         <AiFillStar size={22} color="rgb(59 , 130 , 246)" />
       </span>

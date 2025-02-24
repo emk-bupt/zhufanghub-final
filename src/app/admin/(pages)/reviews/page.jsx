@@ -36,7 +36,7 @@ const Reviews = () => {
     return (
         <AdminLayout>
             <div className="ml-12 h-screen w-full">
-                <h2 className="text-3xl text-slate-800 font-bold whitespace-nowrap">
+                <h2 className="text-3xl text-slate-500 font-bold whitespace-nowrap">
                     所有评论
                 </h2>
                 <div className="mt-2 h-2/3 w-[50vw]">

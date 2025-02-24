@@ -20,7 +20,7 @@ const Reservations = () => {
     return (
         <Layout>
             <div className="ml-12 h-screen w-full">
-                <h2 className="text-3xl text-slate-800 font-bold whitespace-nowrap">
+                <h2 className="text-3xl text-slate-500 font-bold whitespace-nowrap">
                     所以预订
                 </h2>
                 <div className="mt-2 h-2/3 w-[65vw]">

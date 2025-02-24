@@ -59,7 +59,7 @@ const Dashboard = () => {
 
   return (
     <AdminLayout>
-      <div className="ml-2 w-full h-full flex flex-col col-span-7 overflow-hidden">
+      <div className="ml-2 w-full h-full flex flex-col col-span-7 overflow-hidden bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
         {/* Widget Grid */}
         <div className="grid grid-cols-4 gap-8">
           {widgetData?.map(({ id, page, displayName, data, icon }) => (

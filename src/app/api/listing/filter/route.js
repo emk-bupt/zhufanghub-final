@@ -25,9 +25,9 @@ export async function GET(req) {
             }
         })
 
-        console.log(listings)
+        
         const sortedListings = calcAndSortListings(listings)
-        console.log(sortedListings)
+       
         return NextResponse.json(sortedListings)
     } catch (error) {
         return NextResponse.error(error)

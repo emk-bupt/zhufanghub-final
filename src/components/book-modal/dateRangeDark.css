@@ -1,0 +1,97 @@
+/* Full Dark Mode for react-date-range */
+.dark .rdrCalendarWrapper,
+.dark .rdrDateRangeWrapper {
+  background-color: #1f2937 !important; /* Dark gray */
+  color: #e5e7eb !important; /* Light gray text */
+  border-color: #374151 !important;
+}
+
+/* Sidebar & Quick Selection Buttons */
+.dark .rdrStaticRanges,
+.dark .rdrStaticRange {
+  background-color: #1f2937 !important;
+  color: #e5e7eb !important;
+}
+.dark .rdrStaticRange:hover {
+  background-color: #374151 !important;
+}
+
+/* Date Input Fields */
+.dark .rdrInputRanges,
+.dark .rdrInputRange {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+  color: #e5e7eb !important;
+}
+
+/* Calendar Header (Month & Year Select) */
+.dark .rdrMonthAndYearWrapper {
+  background-color: #1f2937 !important;
+  color: #e5e7eb !important;
+}
+
+/* Month & Year Dropdowns */
+.dark .rdrMonthAndYearPickers select {
+  background-color: #374151 !important;
+  color: #e5e7eb !important;
+  border: none;
+}
+
+/* Dates Section (Fixing Remaining White Parts) */
+.dark .rdrMonths {
+  background-color: #1f2937 !important;
+}
+
+.dark .rdrMonth {
+  background-color: #1f2937 !important;
+}
+
+.dark .rdrDays {
+  background-color: #1f2937 !important;
+}
+
+/* Calendar Days */
+.dark .rdrDay {
+  background-color: #1f2937 !important;
+}
+
+.dark .rdrDayNumber span {
+  color: #e5e7eb !important; /* Ensure numbers are visible */
+}
+
+/* Selected Date - Fix for Dark Mode */
+.dark .rdrDaySelected span {
+  background-color: #2563eb !important; /* Brighter blue */
+  color: #ffffff !important;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); /* Add glow */
+}
+
+/* Disabled Dates */
+.dark .rdrDayDisabled {
+  background-color: #374151 !important;
+  color: #6b7280 !important;
+  opacity: 0.5;
+}
+
+/* Navigation Buttons */
+.dark .rdrNextPrevButton {
+  background-color: #374151 !important;
+  color: #e5e7eb !important;
+}
+
+/* Fix the White Area Under Sidebar */
+.dark .rdrDefinedRangesWrapper {
+  background-color: #1f2937 !important;
+}
+
+/* Fix any last remaining white spots */
+.dark .rdrDateDisplayWrapper {
+  background-color: #1f2937 !important;
+  color: #e5e7eb !important;
+}
+
+.dark .rdrDateDisplayItem {
+  background-color: #374151 !important;
+  color: #e5e7eb !important;
+}

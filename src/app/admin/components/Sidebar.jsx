@@ -1,68 +1,52 @@
-"use client"
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import React from 'react'
-import { AiFillStar, AiOutlineHome, AiOutlineUser } from 'react-icons/ai'
-import { MdDashboard, MdHotel } from 'react-icons/md'
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
+import React from "react";
+import { AiFillStar, AiOutlineHome, AiOutlineUser } from "react-icons/ai";
+import { MdDashboard, MdHotel } from "react-icons/md";
+import { FaBuilding } from "react-icons/fa"; // Fixed icon
 
 const Sidebar = () => {
-    const currentPage = usePathname().split("/")[2]
+    const currentPage = usePathname().split("/")[2];
+    const { theme } = useTheme();
 
     const sidebarData = [
-        {
-            text: "仪表板",
-            icon: MdDashboard,
-            href: "/admin/dashboard",
-            isCurrentPage: currentPage === "dashboard",
-        },
-        {
-            text: "用户",
-            icon: AiOutlineUser,
-            href: "/admin/users",
-            isCurrentPage: currentPage === "users",
-        },
-        {
-            text: "酒店",
-            icon: MdHotel,
-            href: "/admin/listings",
-            isCurrentPage: currentPage === "listings",
-        },
-        {
-            text: "预订",
-            icon: AiOutlineHome,
-            href: "/admin/reservations",
-            isCurrentPage: currentPage === "reservations",
-        },
-        {
-            text: "评论",
-            icon: AiFillStar,
-            href: "/admin/reviews",
-            isCurrentPage: currentPage === "reviews",
-        },
-    ]
+        { text: "仪表板", icon: MdDashboard, href: "/admin/dashboard", isCurrentPage: currentPage === "dashboard" },
+        { text: "用户", icon: AiOutlineUser, href: "/admin/users", isCurrentPage: currentPage === "users" },
+        { text: "公司", icon: FaBuilding, href: "/admin/companies", isCurrentPage: currentPage === "companies" }, // Fixed icon
+        { text: "酒店", icon: MdHotel, href: "/admin/listings", isCurrentPage: currentPage === "listings" },
+        { text: "预订", icon: AiOutlineHome, href: "/admin/reservations", isCurrentPage: currentPage === "reservations" },
+        { text: "评论", icon: AiFillStar, href: "/admin/reviews", isCurrentPage: currentPage === "reviews" },
+    ];
 
     return (
-        <div className="w-full flex flex-col justify-between">
-            <div className="h-full w-full flex flex-col gap-10 col-span-1">
+        <div className="w-full h-full flex flex-col bg-[#F3F4F6] dark:bg-gray-900 p-4 transition-all">
+            <div className="h-full flex flex-col space-y-8">
                 {sidebarData.map((data) => (
                     <Link
                         href={data.href}
                         key={data.text}
-                        className={`flex items-center gap-2 p-3 rounded-xl transition-all cursor-pointer ${data.isCurrentPage && "bg-blue-600"}`}
+                        className={`flex items-center gap-3 p-3 rounded-xl transition-all cursor-pointer 
+                        ${
+                            data.isCurrentPage
+                                ? "bg-blue-600 text-white"
+                                : "hover:bg-gray-300 dark:hover:bg-gray-700"
+                        }`}
                     >
                         <span>
-                           {
-                            <data.icon color={data.isCurrentPage ? "#fff" : "#cec7c7"}/>
-                           }
+                            <data.icon
+                                color={data.isCurrentPage ? "#F3F4F6" : theme === "dark" ? "#D1D5DB" : "#4B5563"}
+                            />
                         </span>
-                        <span className={`${data.isCurrentPage ? "text-white" : "text-[#cec7c7]"}`}>
+                        <span className={`text-lg font-medium ${data.isCurrentPage ? "text-white" : "text-gray-700 dark:text-gray-300"}`}>
                             {data.text}
                         </span>
                     </Link>
                 ))}
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Sidebar
+export default Sidebar;

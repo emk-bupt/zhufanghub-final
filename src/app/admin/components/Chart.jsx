@@ -1,11 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { useTheme } from "next-themes";
 
 const DynamicChartWithAPI = () => {
   const [chartData, setChartData] = useState([]);
+  const { theme } = useTheme(); // Get the current theme (dark/light)
 
-  // Fetch the revenue data from the API
   useEffect(() => {
     const fetchRevenueData = async () => {
       try {
@@ -14,9 +15,7 @@ const DynamicChartWithAPI = () => {
 
         console.log("Fetched Data: ", data);
 
-        // Check if the response is valid (an array of 7 days)
         if (Array.isArray(data) && data.length === 7) {
-          // Prepare data to be used by Recharts
           const formattedData = data.map((revenue, index) => ({
             day: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"][index],
             revenue: revenue,
@@ -32,20 +31,18 @@ const DynamicChartWithAPI = () => {
     };
 
     fetchRevenueData();
-
-    // Optionally, you can fetch data at intervals to keep the chart up-to-date
     const interval = setInterval(fetchRevenueData, 30000); // Refresh every 30 seconds
 
-    return () => clearInterval(interval); // Cleanup the interval when the component is unmounted
+    return () => clearInterval(interval);
   }, []);
 
-  // Custom Tooltip content
+  // Custom Tooltip with dark mode support
   const CustomTooltip = ({ payload, label }) => {
     if (payload && payload.length) {
       const { revenue } = payload[0].payload;
       return (
-        <div className="custom-tooltip p-2 bg-white rounded-lg shadow-lg">
-          <p className="text-sm font-semibold">{`${label}：收入 ${revenue}￥`}</p>
+        <div className={`p-2 rounded-lg shadow-lg ${theme === "dark" ? "bg-gray-700 text-white" : "bg-white text-gray-900"}`}>
+          <p className="text-sm font-semibold">{`${label}：收入 ￥${revenue}`}</p>
         </div>
       );
     }
@@ -53,22 +50,22 @@ const DynamicChartWithAPI = () => {
   };
 
   return (
-    <div className="h-[525px] col-span-5 font-sans text-gray-900">
-      <h1 className="text-3xl font-extrabold mb-6 text-center text-blue-600">每周收入图表</h1>
+    <div className="h-[525px] col-span-5 font-sans bg-white dark:bg-gray-800 p-4 rounded-xl shadow-lg transition-all">
+      <h1 className="text-3xl font-extrabold mb-6 text-center text-blue-600 dark:text-blue-400">
+        每周收入图表
+      </h1>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+          <CartesianGrid strokeDasharray="3 3" stroke={theme === "dark" ? "#4B5563" : "#E5E7EB"} />
           <XAxis 
             dataKey="day" 
-            tick={{ fontSize: 14, fontFamily: 'Noto Sans SC', fontWeight: '500' }} 
-            angle={-45} // Angle to rotate the labels and make them fit better
-            textAnchor="end" 
-            stroke="#333" // Color for x-axis labels
+            tick={{ fontSize: 14, fontFamily: 'Noto Sans SC', fontWeight: '500', fill: theme === "dark" ? "#D1D5DB" : "#333" }} 
+            angle={-45} 
+            textAnchor="end"
           />
           <YAxis 
             tickFormatter={(value) => `￥${value}`} 
-            tick={{ fontSize: 14, fontFamily: 'Noto Sans SC', fontWeight: '500' }} 
-            stroke="#333" // Color for y-axis labels
+            tick={{ fontSize: 14, fontFamily: 'Noto Sans SC', fontWeight: '500', fill: theme === "dark" ? "#D1D5DB" : "#333" }} 
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend 
@@ -76,9 +73,9 @@ const DynamicChartWithAPI = () => {
               fontFamily: "Noto Sans SC",
               fontSize: "14px",
               fontWeight: "bold",
-              color: "#333",
+              color: theme === "dark" ? "#D1D5DB" : "#333",
             }}
-            payload={[{ value: "收入", type: "square", color: "#2563EB" }]} // Custom label for the legend
+            payload={[{ value: "收入", type: "square", color: "#2563EB" }]} 
           />
           <Bar 
             dataKey="revenue" 

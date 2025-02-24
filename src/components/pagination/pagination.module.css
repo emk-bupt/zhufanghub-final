@@ -13,12 +13,17 @@
 .item {
     margin: 0 0.25rem;
     padding: 0.5rem 1rem;
-    background-color: #3b82f6;
+    background-color: #3b82f6; /* Light mode blue */
     color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.item:hover {
+    background-color: #2563eb; /* Hover color in light mode */
 }
 
 .active {
@@ -37,4 +42,30 @@
     border-right: 1px solid #fff;
     position: absolute;
     left: 0;
+}
+
+/* Dark Mode Styles */
+.pagination.darkMode {
+    background-color: #1C1B22; /* Darker background for pagination in dark mode */
+}
+
+.item.darkMode {
+    background-color: #4b6cb7; /* Darker blue for items in dark mode */
+    color: #fff;
+}
+
+.item.darkMode:hover {
+    background-color: #2c4d8b; /* Slightly darker hover color for dark mode */
+}
+
+.active.darkMode {
+    border: solid 1px #4b6cb7; /* Darker border for active item in dark mode */
+}
+
+.nextArrow.darkMode {
+    border-left: 1px solid #4b6cb7; /* Darker arrow color for dark mode */
+}
+
+.previousArrow.darkMode {
+    border-right: 1px solid #fff;
 }

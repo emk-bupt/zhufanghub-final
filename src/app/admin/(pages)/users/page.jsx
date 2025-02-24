@@ -21,7 +21,7 @@ const Users = () => {
   return (
     <AdminLayout>
       <div className="ml-12 h-screen w-full">
-        <h2 className="text-3xl text-slate-800 font-semibold">
+        <h2 className="text-3xl text-slate-500 font-semibold">
           所有用户
         </h2>
         <div className="mt-2 h-2/3 w-[50vw]">

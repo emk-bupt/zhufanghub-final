@@ -1,29 +1,57 @@
 "use client";
 import { AiOutlineUser } from "react-icons/ai";
-import React, { useEffect, useState } from "react";
+import { MdDarkMode, MdLightMode } from "react-icons/md"; // Theme icons
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
 
 const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-  const toggleModal = () => {
-    setShowModal((prev) => !prev);
-  };
+  // Ref for dropdown modal
+  const modalRef = useRef(null);
 
-  const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev);
-  };
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const toggleModal = () => setShowModal((prev) => !prev);
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   useEffect(() => {
     window.onscroll = () => {
-      setIsScrolled(window.pageYOffset === 0 ? false : true);
+      setIsScrolled(window.pageYOffset !== 0);
       return () => (window.onscroll = null);
     };
   }, []);
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  // Close the modal if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setShowModal(false); // Close the dropdown
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  if (!mounted) return null;
+
+  console.log(session);
 
   return (
     <div
@@ -42,44 +70,63 @@ const Navbar = () => {
           </h1>
         </Link>
 
-        {/* Hamburger menu for mobile, now with white color */}
+        {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center">
-          <button
-            onClick={toggleMenu}
-            className="text-2xl text-white" // Set the color to white
-          >
+          <button onClick={toggleMenu} className="text-2xl text-white">
             {isMenuOpen ? "×" : "☰"}
           </button>
         </div>
 
         {/* Navbar Links for Desktop */}
         <div className="hidden md:flex items-center gap-4 relative">
-          <div onClick={toggleModal} className="cursor-pointer relative">
+          {/* Theme Toggle Button */}
+          <button
+            onClick={toggleTheme}
+            className="text-2xl cursor-pointer text-[#cec7c7] dark:text-[#f5f5f5]"
+          >
+            {theme === "dark" ? <MdLightMode /> : <MdDarkMode />}
+          </button>
+
+          <div
+            onClick={toggleModal}
+            className="cursor-pointer relative"
+            ref={modalRef}
+          >
             <AiOutlineUser
               size={30}
-              color={`${isScrolled ? "rgba(37, 99, 235, 1)" : "#cec7c7"}`}
+              color={isScrolled ? "rgba(37, 99, 235, 1)" : "#cec7c7"}
             />
-            {/* Modal for User Actions (Positioned under the icon) */}
             {showModal && (
               <div
-                className="absolute top-12 right-0 shadow-md flex flex-col items-center gap-4 p-4 bg-white rounded-xl transition-all ease-in-out duration-300 transform origin-top"
+                className="absolute top-12 right-0 shadow-md flex flex-col items-center gap-4 p-4 bg-white dark:bg-black rounded-xl transition-all ease-in-out duration-300 transform origin-top"
                 style={{
                   opacity: showModal ? 1 : 0,
                   transform: showModal ? "scaleY(1)" : "scaleY(0)",
-                  width: "150px", // Set a fixed width or use "auto" for content-based width
+                  width: "150px",
                 }}
               >
                 {session?.user?.isAdmin && (
                   <Link
-                    className="bg-red-500 text-white px-4 py-2 rounded-xl w-full text-center hover:bg-red-600 transition-all duration-300"
-                    href={"/admin/dashboard"}
+                    href="/admin/dashboard"
+                    className="w-full text-center px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-all duration-300"
                   >
                     管理仪表板
                   </Link>
                 )}
+
+                {/* Company Dashboard Link */}
+                {session?.user?.isCompany && (
+                  <Link
+                    href="/company/dashboard"
+                    className="w-full text-center px-4 py-2 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-all duration-300"
+                  >
+                    公司仪表板
+                  </Link>
+                )}
+
                 <Link
-                  href={"/reservations"}
-                  className="text-slate-500 text-center w-full hover:bg-slate-100 hover:text-blue-600 transition-all duration-300"
+                  href="/reservations"
+                  className="w-full text-center px-4 py-2 text-gray-900 dark:text-gray-100 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-blue-600 transition-all duration-300"
                 >
                   预订
                 </Link>
@@ -88,7 +135,7 @@ const Navbar = () => {
                     signOut();
                     setShowModal(false);
                   }}
-                  className="text-slate-500 text-center w-full hover:bg-slate-100 hover:text-blue-600 transition-all duration-300"
+                  className="w-full text-center px-4 py-2 text-gray-900 dark:text-gray-100 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-blue-600 transition-all duration-300"
                 >
                   登出
                 </button>
@@ -99,18 +146,39 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden absolute top-16 left-0 w-full bg-white shadow-md p-4 flex flex-col items-center gap-4">
+          <div className="md:hidden absolute top-16 left-0 w-full bg-white dark:bg-black shadow-md p-4 flex flex-col items-center gap-4">
+            {/* Theme Toggle Button Inside Mobile Menu */}
+            <button
+              onClick={toggleTheme}
+              className="text-4xl cursor-pointer text-gray-600 dark:text-gray-200"
+            >
+              {theme === "dark" ? <MdLightMode /> : <MdDarkMode />}
+            </button>
+
             {session?.user?.isAdmin && (
               <Link
-                className="bg-red-500 text-white px-4 py-2 rounded-xl w-full text-center hover:bg-red-600 transition-all duration-300"
-                href={"/admin/dashboard"}
+                href="/admin/dashboard"
+                className="w-full text-center px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-all duration-300"
+                onClick={toggleMenu}
               >
                 管理仪表板
               </Link>
             )}
+
+            {/* Company Dashboard Link for Mobile */}
+            {session?.user?.isCompany && (
+              <Link
+                href="/company/dashboard"
+                className="w-full text-center px-4 py-2 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-all duration-300"
+                onClick={toggleMenu}
+              >
+                公司仪表板
+              </Link>
+            )}
+
             <Link
-              href={"/reservations"}
-              className="text-slate-500 text-center w-full hover:bg-slate-100 hover:text-blue-600 transition-all duration-300"
+              href="/reservations"
+              className="w-full text-center px-4 py-2 text-gray-900 dark:text-gray-100 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-blue-600 transition-all duration-300"
               onClick={toggleMenu}
             >
               预订
@@ -118,9 +186,9 @@ const Navbar = () => {
             <button
               onClick={() => {
                 signOut();
-                toggleMenu(); // Close menu on sign out
+                toggleMenu();
               }}
-              className="text-slate-500 text-center w-full hover:bg-slate-100 hover:text-blue-600 transition-all duration-300"
+              className="w-full text-center px-4 py-2 text-gray-900 dark:text-gray-100 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-blue-600 transition-all duration-300"
             >
               登出
             </button>

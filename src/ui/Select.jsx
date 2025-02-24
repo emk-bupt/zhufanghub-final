@@ -3,7 +3,7 @@ import React from 'react'
 const Select = ({
     data,
     register,
-    className
+    className,
 }) => {
     const defaultClassName = "text-slate-400 rounded-md w-2/3 outline-none p-2"
   return (
